@@ -1,3 +1,4 @@
 rootProject.name = 'wiremock-contract-verifier'
 
 include 'core'
+include 'sample'
