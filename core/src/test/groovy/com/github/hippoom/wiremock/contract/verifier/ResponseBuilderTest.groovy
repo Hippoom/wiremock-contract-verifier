@@ -12,6 +12,13 @@ import static org.springframework.http.HttpStatus.OK
 class ResponseBuilderTest extends Specification {
 
     def subject = new ResultMatcherMapper()
+    private request
+    private response
+
+    def setup() {
+        request = new MockHttpServletRequest()
+        response = new MockHttpServletResponse()
+    }
 
     def "The builder should support response status"() {
 
@@ -25,17 +32,14 @@ class ResponseBuilderTest extends Specification {
             }
         """)
 
-        def response = new MockHttpServletResponse()
-        response.setStatus(CREATED.value())
+        this.response.setStatus(CREATED.value())
 
         when:
-
-        subject.match(stubMapping,
-            new DefaultMvcResult(new MockHttpServletRequest(), response))
+        def actual = subject.from(stubMapping)
 
 
         then:
-        noExceptionThrown()
+        actual.match(new DefaultMvcResult(this.request, this.response))
     }
 
     def "The builder should support response body"() {
@@ -53,7 +57,6 @@ class ResponseBuilderTest extends Specification {
             }
         """)
 
-        MockHttpServletResponse response = new MockHttpServletResponse()
         response.setStatus(OK.value())
         response.getOutputStream().print("""
             {
@@ -63,11 +66,10 @@ class ResponseBuilderTest extends Specification {
 
         when:
 
-        subject.match(stubMapping,
-            new DefaultMvcResult(new MockHttpServletRequest(), response))
+        def actual = subject.from(stubMapping)
 
 
         then:
-        noExceptionThrown()
+        actual.match(new DefaultMvcResult(this.request, this.response))
     }
 }
