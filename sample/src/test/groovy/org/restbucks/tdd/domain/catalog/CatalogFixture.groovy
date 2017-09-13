@@ -7,6 +7,7 @@ class CatalogFixture {
         target.setId(Catalog.Identity.next())
         target.setName("Latte")
         target.setSize(Size.MEDIUM)
+        target.setPrice(28)
     }
 
     static CatalogFixture aCatalog() {

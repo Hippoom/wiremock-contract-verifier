@@ -1,0 +1,30 @@
+{
+    "request": {
+        "method": "GET",
+        "url": "http://localhost:8080/rel/catalogs"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "_embedded": {
+                "catalogs": [
+                    {
+                        "name": "Espresso",
+                        "size": "LARGE",
+                        "price": 32
+                    },
+                    {
+                        "name": "Latte",
+                        "size": "MEDIUM",
+                        "price": 28
+                    }
+                ]
+            },
+            "_links": {
+                "self": {
+                    "href": "http://localhost:8080/rel/catalogs"
+                }
+            }
+        }
+    }
+}
