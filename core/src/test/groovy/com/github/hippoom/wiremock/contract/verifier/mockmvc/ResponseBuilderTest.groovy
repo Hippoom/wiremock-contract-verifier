@@ -1,5 +1,6 @@
-package com.github.hippoom.wiremock.contract.verifier
+package com.github.hippoom.wiremock.contract.verifier.mockmvc
 
+import com.github.hippoom.wiremock.contract.verifier.mockmvc.ResultMatcherMapper
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.mock.web.MockHttpServletResponse

@@ -1,4 +1,4 @@
-package com.github.hippoom.wiremock.contract.verifier;
+package com.github.hippoom.wiremock.contract.verifier.mockmvc;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

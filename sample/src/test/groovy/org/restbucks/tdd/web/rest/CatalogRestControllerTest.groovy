@@ -1,7 +1,7 @@
 package org.restbucks.tdd.web.rest
 
-import com.github.hippoom.wiremock.contract.verifier.Contract
-import com.github.hippoom.wiremock.contract.verifier.MockMvcContractVerifier
+import com.github.hippoom.wiremock.contract.verifier.anntation.Contract
+import com.github.hippoom.wiremock.contract.verifier.junit.MockMvcContractVerifier
 import org.junit.Rule
 import org.junit.Test
 import org.restbucks.tdd.domain.catalog.CatalogRepository

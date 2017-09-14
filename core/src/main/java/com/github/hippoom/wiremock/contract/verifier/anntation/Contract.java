@@ -1,4 +1,4 @@
-package com.github.hippoom.wiremock.contract.verifier;
+package com.github.hippoom.wiremock.contract.verifier.anntation;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;

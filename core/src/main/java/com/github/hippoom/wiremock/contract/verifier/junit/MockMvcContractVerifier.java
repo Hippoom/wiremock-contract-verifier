@@ -1,8 +1,12 @@
-package com.github.hippoom.wiremock.contract.verifier;
+package com.github.hippoom.wiremock.contract.verifier.junit;
 
 import static com.github.tomakehurst.wiremock.stubbing.StubMapping.buildFrom;
 import static java.nio.file.Files.readAllBytes;
 
+import com.github.hippoom.wiremock.contract.verifier.mockmvc.MockHttpServletRequestBuilderMapper;
+import com.github.hippoom.wiremock.contract.verifier.NoSuchContractException;
+import com.github.hippoom.wiremock.contract.verifier.mockmvc.ResultMatcherMapper;
+import com.github.hippoom.wiremock.contract.verifier.anntation.Contract;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import java.io.IOException;
 import java.nio.charset.Charset;
