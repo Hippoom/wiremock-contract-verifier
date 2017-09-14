@@ -3,10 +3,10 @@ package com.github.hippoom.wiremock.contract.verifier.junit;
 import static com.github.tomakehurst.wiremock.stubbing.StubMapping.buildFrom;
 import static java.nio.file.Files.readAllBytes;
 
-import com.github.hippoom.wiremock.contract.verifier.mockmvc.MockHttpServletRequestBuilderMapper;
 import com.github.hippoom.wiremock.contract.verifier.NoSuchContractException;
-import com.github.hippoom.wiremock.contract.verifier.mockmvc.ResultMatcherMapper;
 import com.github.hippoom.wiremock.contract.verifier.anntation.Contract;
+import com.github.hippoom.wiremock.contract.verifier.mockmvc.MockHttpServletRequestBuilderMapper;
+import com.github.hippoom.wiremock.contract.verifier.mockmvc.ResultMatcherMapper;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -25,15 +25,12 @@ public class MockMvcContractVerifier extends TestWatcher {
     private final ResultMatcherMapper resultMatcherMapper =
         new ResultMatcherMapper();
 
-    private MockHttpServletRequestBuilder requestBuilder;
-    private ResultMatcher resultMatcher;
+    private StubMapping stubMapping;
 
     @Override
     protected void starting(Description description) {
         Contract contract = description.getAnnotation(Contract.class);
-        StubMapping stubMapping = buildFrom(extractJsonFrom(contract));
-        requestBuilder = this.requestBuilderMapper.from(stubMapping);
-        resultMatcher = this.resultMatcherMapper.from(stubMapping);
+        stubMapping = buildFrom(extractJsonFrom(contract));
     }
 
     private String extractJsonFrom(Contract contract) {
@@ -48,10 +45,10 @@ public class MockMvcContractVerifier extends TestWatcher {
     }
 
     public MockHttpServletRequestBuilder requestPattern() {
-        return requestBuilder;
+        return this.requestBuilderMapper.from(stubMapping);
     }
 
     public ResultMatcher responseDefinition() {
-        return resultMatcher;
+        return this.resultMatcherMapper.from(stubMapping);
     }
 }
