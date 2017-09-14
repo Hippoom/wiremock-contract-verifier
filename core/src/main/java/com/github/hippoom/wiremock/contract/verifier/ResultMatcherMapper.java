@@ -13,7 +13,7 @@ import org.springframework.util.StringUtils;
 
 public class ResultMatcherMapper {
 
-    public ResultMatcher from(StubMapping stubMapping) throws Exception {
+    public ResultMatcher from(StubMapping stubMapping) {
         List<ResultMatcher> delegates = new ArrayList<>();
 
         ResponseDefinition responseDefinition = stubMapping.getResponse();

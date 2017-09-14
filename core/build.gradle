@@ -4,6 +4,7 @@ dependencies {
     compile 'org.springframework:spring-test'
     compile 'org.springframework:spring-web'
     compile 'org.hamcrest:hamcrest-library'
+    compile group: 'junit', name: 'junit'
     compile group: 'org.skyscreamer', name: 'jsonassert'
 
     testCompile group: 'org.spockframework', name: 'spock-core', version: '1.1-groovy-2.4'

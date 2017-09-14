@@ -1,18 +1,15 @@
 package org.restbucks.tdd.web.rest
 
-import com.github.hippoom.wiremock.contract.verifier.MockHttpServletRequestBuilderMapper
-import com.github.hippoom.wiremock.contract.verifier.ResultMatcherMapper
+import com.github.hippoom.wiremock.contract.verifier.Contract
+import com.github.hippoom.wiremock.contract.verifier.MockMvcContractVerifier
+import org.junit.Rule
 import org.junit.Test
 import org.restbucks.tdd.domain.catalog.CatalogRepository
 import org.restbucks.tdd.web.AbstractWebMvcTest
 import org.restbucks.tdd.web.rest.assembler.CatalogResourceAssembler
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.core.io.ClassPathResource
-import org.springframework.test.web.servlet.ResultMatcher
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
 
-import static com.github.tomakehurst.wiremock.stubbing.StubMapping.buildFrom
 import static org.mockito.BDDMockito.given
 import static org.restbucks.tdd.domain.catalog.CatalogFixture.aCatalog
 import static org.restbucks.tdd.domain.catalog.Size.LARGE
@@ -23,9 +20,13 @@ import static org.restbucks.tdd.domain.catalog.Size.LARGE
 ])
 class CatalogRestControllerTest extends AbstractWebMvcTest {
 
+    @Rule
+    public final MockMvcContractVerifier contractVerifier = new MockMvcContractVerifier()
+
     @MockBean
     private CatalogRepository catalogRepository
 
+    @Contract("catalogs.json")
     @Test
     void "it should return all catalogs"() {
 
@@ -38,21 +39,9 @@ class CatalogRestControllerTest extends AbstractWebMvcTest {
         ])
 
         // @formatter:off
-        this.mockMvc.perform(requestBy("catalogs.json"))
-                .andExpect(responseBy("catalogs.json"))
+        this.mockMvc.perform(contractVerifier.requestPattern())
+                .andExpect(contractVerifier.responseDefinition())
         // @formatter:on
-    }
-
-    private static MockHttpServletRequestBuilder requestBy(contractPath) {
-        new MockHttpServletRequestBuilderMapper().from(buildFrom(fromJson(contractPath)))
-    }
-
-    private static ResultMatcher responseBy(contractPath) {
-        new ResultMatcherMapper().from(buildFrom(fromJson(contractPath)))
-    }
-
-    private static String fromJson(contractPath) {
-        new ClassPathResource("contracts/${contractPath}").getFile().getText("utf-8")
     }
 
 }
