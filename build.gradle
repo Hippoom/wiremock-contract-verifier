@@ -4,6 +4,8 @@ plugins {
 
 allprojects {
     apply plugin: 'idea'
+    group = 'com.github.hippoom'
+    version = '0.1.0'
 }
 
 subprojects {
@@ -16,8 +18,6 @@ subprojects {
     apply from: "${rootProject.projectDir}/gradle/findbugs.gradle"
     apply from: "${rootProject.projectDir}/gradle/git-hooks.gradle"
 
-    group = 'com.github.hippoom'
-    version = '0.1.0'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
