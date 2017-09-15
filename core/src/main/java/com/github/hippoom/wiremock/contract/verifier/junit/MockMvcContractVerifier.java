@@ -30,7 +30,9 @@ public class MockMvcContractVerifier extends TestWatcher {
     @Override
     protected void starting(Description description) {
         Contract contract = description.getAnnotation(Contract.class);
-        stubMapping = buildFrom(extractJsonFrom(contract));
+        if (contract != null) {
+            stubMapping = buildFrom(extractJsonFrom(contract));
+        }
     }
 
     private String extractJsonFrom(Contract contract) {

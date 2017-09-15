@@ -1,8 +1,6 @@
 package org.restbucks.tdd.web.rest
 
 import com.github.hippoom.wiremock.contract.verifier.anntation.Contract
-import com.github.hippoom.wiremock.contract.verifier.junit.MockMvcContractVerifier
-import org.junit.Rule
 import org.junit.Test
 import org.restbucks.tdd.domain.catalog.CatalogRepository
 import org.restbucks.tdd.web.AbstractWebMvcTest
@@ -19,9 +17,6 @@ import static org.restbucks.tdd.domain.catalog.Size.LARGE
     CatalogResourceAssembler
 ])
 class CatalogRestControllerTest extends AbstractWebMvcTest {
-
-    @Rule
-    public final MockMvcContractVerifier contractVerifier = new MockMvcContractVerifier()
 
     @MockBean
     private CatalogRepository catalogRepository
