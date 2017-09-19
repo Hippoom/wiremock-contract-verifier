@@ -1,5 +1,8 @@
-apply plugin: 'maven'
-apply plugin: 'signing'
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
+apply plugin: 'maven-publish'
 
 dependencies {
 
@@ -38,56 +41,70 @@ artifacts {
 }
 
 def publishStage() {
-    project.hasProperty('publishStage')? publishStage: false
+    project.hasProperty('publishStage') ? publishStage : false
 }
 
-if (publishStage()) {
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    pkg {
+        repo = 'maven'
+        name = rootProject.name
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/Hippoom/wiremock-contract-verifier.git'
+        version {
+            gpg {
+                sign = true
+                passphrase = System.getenv('GPG_PASSPHRASE')
+            }
+        }
+    }
+    publications = ['MyPublication']
+}
 
-    signing {
-        sign configurations.archives
+def pomConfig = {
+    licenses {
+        license {
+            name "The Apache Software License, Version 2.0"
+            url "https://github.com/Hippoom/wiremock-contract-verifier/blob/master/LICENSE"
+            distribution "repo"
+        }
     }
 
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+    developers {
+        developer {
+            id 'hippoom'
+            name 'Yugang Zhou'
+        }
+    }
 
-                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                    authentication(userName: sonatypeUsername, password: sonatypePassword)
-                }
+    scm {
+        url 'scm:https://github.com/Hippoom/wiremock-contract-verifier'
+        connection 'scm:https://github.com/Hippoom/wiremock-contract-verifier'
+        developerConnection 'scm:https://github.com/Hippoom/wiremock-contract-verifier'
+    }
+}
 
-                pom.project {
-                    groupId rootProject.group
-                    artifactId rootProject.name
-                    version rootProject.version
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
 
-                    name rootProject.name
-                    packaging 'jar'
-                    description 'Shared contract driven development with WireMock and Spring MockMvc'
-                    url 'https://github.com/Hippoom/wiremock-contract-verifier'
+            groupId rootProject.group
+            artifactId rootProject.name
+            version rootProject.version
 
-                    scm {
-                        url 'scm:https://github.com/Hippoom/wiremock-contract-verifier'
-                        connection 'scm:https://github.com/Hippoom/wiremock-contract-verifier'
-                        developerConnection 'scm:https://github.com/Hippoom/wiremock-contract-verifier'
-                    }
-
-                    licenses {
-                        license {
-                            name 'Apache License'
-                            url 'https://github.com/Hippoom/wiremock-contract-verifier/blob/master/LICENSE'
-                            distribution 'repo'
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id 'hippoom'
-                            name 'Yugang Zhou'
-                        }
-                    }
-                }
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'Your description of the lib')
+                root.appendNode('name', 'Your name of the lib')
+                root.appendNode('url', 'https://site_for_lib.tld')
+                root.children().last() + pomConfig
             }
         }
     }
 }
+
+
