@@ -40,10 +40,6 @@ artifacts {
     archives javadocJar
 }
 
-def publishStage() {
-    project.hasProperty('publishStage') ? publishStage : false
-}
-
 bintray {
     user = System.getenv('BINTRAY_USER')
     key = System.getenv('BINTRAY_KEY')
