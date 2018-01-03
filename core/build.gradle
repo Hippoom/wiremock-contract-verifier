@@ -6,7 +6,7 @@ apply plugin: 'maven-publish'
 
 dependencies {
 
-    compile group: 'com.github.tomakehurst', name: 'wiremock-standalone', version: '2.8.0'
+    compile group: 'com.github.tomakehurst', name: 'wiremock-standalone', version: '2.12.0'
     compile 'org.springframework:spring-test'
     compile 'org.springframework:spring-web'
     compile 'org.hamcrest:hamcrest-library'

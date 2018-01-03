@@ -9,6 +9,8 @@ import org.restbucks.tdd.web.rest.assembler.OrderResourceAssembler;
 import org.restbucks.tdd.web.rest.resource.OrderResource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -25,6 +27,11 @@ public class OrderRestController {
     @GetMapping("/rel/orders/{id}")
     public OrderResource findOne(@PathVariable String id) {
         return orderResourceAssembler.toResource(orderRepository.findOne(Order.Identity.of(id)));
+    }
+
+    @PostMapping("/rel/orders/{id}/cancellation")
+    public OrderResource handle(@RequestBody String command) {
+        return new OrderResource();
     }
 
 }

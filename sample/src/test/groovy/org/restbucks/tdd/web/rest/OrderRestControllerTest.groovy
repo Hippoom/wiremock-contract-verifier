@@ -1,5 +1,6 @@
 package org.restbucks.tdd.web.rest
 
+import com.github.hippoom.wiremock.contract.verifier.anntation.Contract
 import org.junit.Test
 import org.restbucks.tdd.domain.ordering.OrderRepository
 import org.restbucks.tdd.web.AbstractWebMvcTest
@@ -9,6 +10,9 @@ import org.springframework.boot.test.mock.mockito.MockBean
 
 import static org.hamcrest.Matchers.is
 import static org.mockito.BDDMockito.given
+import static org.restbucks.tdd.domain.catalog.CatalogFixture.aCatalog
+import static org.restbucks.tdd.domain.catalog.CatalogFixture.aCatalog
+import static org.restbucks.tdd.domain.catalog.Size.LARGE
 import static org.restbucks.tdd.domain.ordering.Location.TAKE_AWAY
 import static org.restbucks.tdd.domain.ordering.Order.newOrder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -38,5 +42,13 @@ class OrderRestControllerTest extends AbstractWebMvcTest {
                 .andExpect(jsonPath("location", is(order.location.name())))
         // @formatter:on
     }
+    @Contract("cancel-order.json")
+    @Test
+    void "it should handle order cancellation"() {
 
+        // @formatter:off
+        this.mockMvc.perform(contractVerifier.requestPattern())
+                .andExpect(contractVerifier.responseDefinition())
+        // @formatter:on
+    }
 }

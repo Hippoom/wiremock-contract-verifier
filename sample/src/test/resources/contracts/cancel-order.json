@@ -1,0 +1,16 @@
+{
+    "request": {
+        "method": "POST",
+        "url": "/rel/orders/1/cancellation",
+        "bodyPatterns": [
+            {
+                "equalToJson": {
+                    "reason": "nono"
+                }
+            }
+        ]
+    },
+    "response": {
+        "status": 200
+    }
+}
