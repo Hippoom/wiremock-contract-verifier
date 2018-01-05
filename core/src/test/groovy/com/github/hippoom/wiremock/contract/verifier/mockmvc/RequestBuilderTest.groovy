@@ -75,7 +75,7 @@ class RequestBuilderTest extends Specification {
         def stubMapping = StubMapping.buildFrom("""
             {
                 "request": {
-                    "method": "GET",
+                    "method": "POST",
                     "url": "/some/thing",
                     "bodyPatterns" : [ {
                         "equalToJson" : "{}"
@@ -91,8 +91,39 @@ class RequestBuilderTest extends Specification {
 
         then:
 
-        assert actual.method == "GET"
+        assert actual.method == "POST"
         assert actual.requestURI == "/some/thing"
         assert new String(actual.content) == "{ }"
+    }
+
+    def "The builder should support form parameter"() {
+
+        given:
+
+        def stubMapping = StubMapping.buildFrom("""
+            {
+                "request": {
+                    "method": "POST",
+                    "url": "/some/thing",
+                    "bodyPatterns" : [ 
+                        {
+                            "equalTo" : "username=admin&password=123"
+                        } 
+                    ]
+                }
+            }
+        """)
+
+        when:
+
+        MockHttpServletRequest actual = subject.from(stubMapping)
+            .buildRequest(new MockServletContext())
+
+        then:
+
+        assert actual.method == "POST"
+        assert actual.requestURI == "/some/thing"
+        assert actual.getParameter("username") == "admin"
+        assert actual.getParameter("password") == "123"
     }
 }

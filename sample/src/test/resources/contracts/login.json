@@ -1,0 +1,14 @@
+{
+    "request": {
+        "method": "POST",
+        "url": "/login",
+        "bodyPatterns": [
+            {
+                "equalTo": "username=john&password=123456"
+            }
+        ]
+    },
+    "response": {
+        "status": 200
+    }
+}
