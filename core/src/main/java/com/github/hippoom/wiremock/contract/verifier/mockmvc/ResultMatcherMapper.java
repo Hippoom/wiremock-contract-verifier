@@ -1,17 +1,30 @@
 package com.github.hippoom.wiremock.contract.verifier.mockmvc;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.skyscreamer.jsonassert.JSONCompareMode.LENIENT;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.github.tomakehurst.wiremock.http.ResponseDefinition;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.util.StringUtils;
 
 public class ResultMatcherMapper {
+
+    private final JSONCompareMode strictJson;
+
+    public ResultMatcherMapper(JSONCompareMode jsonCompareMode) {
+        this.strictJson = jsonCompareMode;
+    }
+
+    public ResultMatcherMapper() {
+        this(LENIENT);
+    }
 
     public ResultMatcher from(StubMapping stubMapping) {
         List<ResultMatcher> delegates = new ArrayList<>();
@@ -21,7 +34,7 @@ public class ResultMatcherMapper {
         delegates.add(status().is(responseDefinition.getStatus()));
 
         if (!StringUtils.isEmpty(responseDefinition.getBody())) {
-            delegates.add(content().json(responseDefinition.getBody()));
+            delegates.add(new JsonContentResultMatchers().json(responseDefinition.getBody(), strictJson));
         }
         return new MultiResultMatcher(delegates);
     }

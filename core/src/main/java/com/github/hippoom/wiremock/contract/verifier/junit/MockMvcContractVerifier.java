@@ -1,16 +1,20 @@
 package com.github.hippoom.wiremock.contract.verifier.junit;
 
+import static com.github.hippoom.wiremock.contract.verifier.mockmvc.JsonContentResultMatchers.toJsonCompareMode;
 import static com.github.tomakehurst.wiremock.stubbing.StubMapping.buildFrom;
 import static java.nio.file.Files.readAllBytes;
 
 import com.github.hippoom.wiremock.contract.verifier.NoSuchContractException;
 import com.github.hippoom.wiremock.contract.verifier.anntation.Contract;
+import com.github.hippoom.wiremock.contract.verifier.mockmvc.JsonContentResultMatchers;
 import com.github.hippoom.wiremock.contract.verifier.mockmvc.MockHttpServletRequestBuilderMapper;
 import com.github.hippoom.wiremock.contract.verifier.mockmvc.ResultMatcherMapper;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
+
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.springframework.core.io.ClassPathResource;
@@ -22,8 +26,7 @@ public class MockMvcContractVerifier extends TestWatcher {
     private final MockHttpServletRequestBuilderMapper requestBuilderMapper =
         new MockHttpServletRequestBuilderMapper();
 
-    private final ResultMatcherMapper resultMatcherMapper =
-        new ResultMatcherMapper();
+    private ResultMatcherMapper resultMatcherMapper;
 
     private StubMapping stubMapping;
 
@@ -32,6 +35,8 @@ public class MockMvcContractVerifier extends TestWatcher {
         Contract contract = description.getAnnotation(Contract.class);
         if (contract != null) {
             stubMapping = buildFrom(extractJsonFrom(contract));
+
+            resultMatcherMapper = new ResultMatcherMapper(toJsonCompareMode(contract));
         }
     }
 
